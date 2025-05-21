@@ -1,0 +1,47 @@
+websap.site {
+    # TLS (HTTPS) se configura automáticamente por Caddy
+
+    # Compresión para mejorar rendimiento
+    encode gzip
+
+    # Configuración de encabezados de seguridad
+    header {
+        # Prevenir clickjacking
+        X-Frame-Options "SAMEORIGIN"
+        # Ayuda contra XSS
+        X-XSS-Protection "1; mode=block"
+        # Evitar que el navegador detecte MIME type incorrectamente
+        X-Content-Type-Options "nosniff"
+        # Política de seguridad de contenido estricta (puede necesitar ajustes según tus recursos)
+        Content-Security-Policy "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; connect-src 'self' https://websap.site;"
+        # Habilitar HSTS (Strict-Transport-Security) para conexiones seguras permanentes
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        # Eliminar el Server header para no exponer información
+        -Server
+    }
+
+    # Manejar API - Proxy inverso a Express backend
+    handle /api/* {
+        reverse_proxy localhost:3000 {
+            # Configurar encabezados para el proxy
+            header_up Host {http.request.host}
+            header_up X-Real-IP {http.request.remote.host}
+            header_up X-Forwarded-For {http.request.remote.host}
+            header_up X-Forwarded-Proto {http.request.scheme}
+        }
+    }
+
+    # Servir archivos estáticos del frontend
+    handle /* {
+        root * /var/www/websap/dist
+        file_server
+        try_files {path} /index.html
+    }
+
+    # Logs
+    log {
+        output file /var/log/caddy/websap.log
+        format console
+        level INFO
+    }
+}

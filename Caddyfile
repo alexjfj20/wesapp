@@ -1,0 +1,68 @@
+websap.site {
+    root * C:\var\www\websap\dist
+    encode gzip
+
+    # Manejo especial para solicitudes POST a usuarios
+    @postToUsers {
+        path /api/users /api/admin/users
+        method POST
+    }
+    handle @postToUsers {
+        uri replace /api/users /api/admin/users/create
+        reverse_proxy localhost:3000 {
+            header_up Accept "application/json"
+            header_up Content-Type "application/json"
+        }
+    }
+
+    # Redirecciones para rutas de dashboard, usuarios y roles
+    @apiRoutesDashboard {
+        path /api/dashboard
+    }
+    handle @apiRoutesDashboard {
+        uri replace /api/dashboard /api/admin/dashboard
+        reverse_proxy localhost:3000 {
+            header_up Accept "application/json"
+            header_up Content-Type "application/json"
+        }
+    }
+    
+    @apiRoutesUsers {
+        path_regexp users ^/api/users(?:/.*)?$
+    }
+    handle @apiRoutesUsers {
+        uri replace /api/users /api/admin/users
+        reverse_proxy localhost:3000 {
+            header_up Accept "application/json"
+            header_up Content-Type "application/json"
+        }
+    }
+    
+    @apiRoutesRoles {
+        path_regexp roles ^/api/roles(?:/.*)?$
+    }
+    handle @apiRoutesRoles {
+        uri replace /api/roles /api/admin/roles
+        reverse_proxy localhost:3000 {
+            header_up Accept "application/json"
+            header_up Content-Type "application/json"
+        }
+    }
+
+    # Manejar todas las otras solicitudes API
+    @apiRoutes {
+        path /api/*
+    }
+    handle @apiRoutes {
+        reverse_proxy localhost:3000 {
+            header_up Accept "application/json"
+            header_up Content-Type "application/json"
+        }
+    }
+
+    # Rutas para archivos estáticos y SPA fallback
+    handle {
+        file_server
+        try_files {path} /index.html
+    }
+}

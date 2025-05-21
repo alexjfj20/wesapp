@@ -1,0 +1,37 @@
+{
+  "name": "websap-frontend",
+  "version": "1.0.0",
+  "description": "Frontend para el sistema WebSAP de administración de restaurantes",
+  "private": true,
+  "scripts": {
+    "dev": "vue-cli-service serve",
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "core-js": "^3.42.0",
+    "register-service-worker": "^1.7.2",
+    "vue": "^2.7.16",
+    "vue-router": "^3.6.5",
+    "vuex": "^3.6.2",
+    "websap-frontend": "file:"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~5.0.8",
+    "@vue/cli-plugin-eslint": "~5.0.8",
+    "@vue/cli-plugin-router": "~5.0.8",
+    "@vue/cli-plugin-vuex": "~5.0.8",
+    "@vue/cli-service": "~5.0.8",
+    "eslint": "^8.51.0",
+    "eslint-plugin-vue": "^9.33.0",
+    "sass": "^1.69.5",
+    "sass-loader": "^13.3.2"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
