@@ -1,0 +1,5 @@
+const { DataTypes } = require('sequelize');
+const sequelize = require('../config/sequelizeInstance');
+const bcrypt = require('bcrypt');
+
+// Resto del código... 

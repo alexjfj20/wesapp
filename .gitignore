@@ -1,0 +1,25 @@
+# Dependencias
+node_modules/
+
+# Archivos de ambiente
+.env
+
+# Logs
+logs/
+*.log
+
+# Directorios de caché y temporales
+.cache/
+.temp/
+.tmp/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de respaldo de base de datos
+backups/
+
+# Otras carpetas y archivos específicos
+coverage/
+.vscode/
